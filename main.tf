@@ -5,7 +5,7 @@ resource random_string drupal-clone_name {
   upper   = false
 }
 
-resource helm_release drupal-clone-test {
+resource helm_release drupal-clone {
   name       = local.name
   atomic     = true
   repository = var.chart_repository

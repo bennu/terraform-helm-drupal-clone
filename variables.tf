@@ -65,7 +65,7 @@ variable s3_hostname {
 }
 
 variable s3_assets_path {
-  description = "path/to/assets/ inside s3 bucket or compatiblë"
+  description = "path/to/assets/ inside s3 bucket or compatible"
   type        = string
   default     = ""
 }
