@@ -121,13 +121,13 @@ variable preinstall_name {
 variable preinstall_image_repository {
   description = "repository for image used for pre-install job"
   type        = string
-  default     = "minio/mc"
+  default     = "bennu/mc"
 }
 
 variable preinstall_image_tag {
   description = "tag for the image used for pre-install job"
   type        = string
-  default     = "RELEASE.2020-12-18T10-53-53Z"
+  default     = "testV3"
 }
 
 variable postinstall_name {

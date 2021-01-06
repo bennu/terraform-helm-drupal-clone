@@ -1,4 +1,13 @@
-<a name="v1.0.0"></a>
+<a name="v1.0.2"></a>
+## v1.0.1
+
+> 05-01-2021
+
+### Fix
+
+* Changes default values for pre-install job image
+
+<a name="v1.0.1"></a>
 ## v1.0.1
 
 > 05-01-2021
