@@ -36,6 +36,14 @@ resource helm_release drupal-clone {
           existingClaim = var.pvc_existing
         }
         jobs = {
+          gitInstallation = {
+            enabled   = var.git_enabled
+            name      = var.git_name
+            user      = var.git_user
+            password  = var.git_password
+            url       = var.git_url
+            branch    = var.git_branch
+          }
           preInstall = {
             name = var.preinstall_name
             image = {
@@ -45,7 +53,8 @@ resource helm_release drupal-clone {
             }
           }
           postInstall = {
-            name = var.postinstall_name
+            settingsConfigMap = var.settings_configmap_name
+            name              = var.postinstall_name
             image = {
               repository = var.postinstall_image_repositroy
               tag        = var.postinstall_image_tag

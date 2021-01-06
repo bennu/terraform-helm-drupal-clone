@@ -10,7 +10,7 @@ In any case, there are some previous steps that needs to be done before using th
 
 - A existing and populated database accesible from K8s
 - A s3 bucket (or compatible bucket) with a tar.gz file for Drupal itself 
--A s3 bucket (or compatible bucket) with a tar.gz file for the 'files' folder containing all the assets uploaded by the users
+- A s3 bucket (or compatible bucket) with a tar.gz file for the 'files' folder containing all the assets uploaded by the users
 - A existing secret (basich-auth) containing the username and password for the database
 - A existing secret (basich-auth containing the username and password for the s3 bucket 
 
@@ -28,7 +28,7 @@ In any case, there are some previous steps that needs to be done before using th
 
 | Name | Repository | Version |
 |:----:|:----------:|:-------:|
-| drupal-clone | https://charts.bennu.cl | `>= 1.0.5` |
+| drupal-clone | https://charts.bennu.cl | `>= 1.0.6` |
 
 
 
@@ -96,4 +96,11 @@ module "my-site" {
 | nginx_replica_count | replica count for nginx| `number` | `1` | no |
 | ingress_host | Ingress host for drupal-clone | `string` | `""` | yes |
 | ingress_annotattions | Annotations for drupal-clone ingress | `map` | `{}` | yes |
+| git_user | Username for git remote repository to download drupal code | `string` | `""` | no |
+| git_password | Password for git remote repository to download drupal code | `string` | `""` | no |
+| git_url | "url of the git remote repository to download drupal code (it should not contain https://) | `string` | `""` | no |
+| git_branch | branch which will be downloaded from the git remote repository | `string` | `""` | no |
+| settings_configmap_name | Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git) | `string` | `""` | no |
+| git_enabled | Enable download drupal code download from a git repository | `bool` | `false` | no |
+
 

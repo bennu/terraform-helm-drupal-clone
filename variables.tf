@@ -25,13 +25,13 @@ variable chart_name {
 variable chart_version {
   description = "Helm chart version for drupal-clone"
   type        = string
-  default     = "1.0.5"
+  default     = "1.0.6"
 }
 
 variable timeout {
   description = "Timeout for helm (in seconds)"
   type        = number
-  default     = 1200
+  default     = 1500
 }
 
 variable db_host {
@@ -202,4 +202,44 @@ variable ingress_annotattions {
   default     = {}
 }
 
+variable git_user {
+  description = "Username for git remote repository to download drupal code"
+  type        = string
+  default     = ""
+}
 
+variable git_password {
+  description = "Password for git remote repository to download drupal code"
+  type        = string
+  default     = ""
+}
+
+variable git_name {
+  description = "name of the git remote repository to download drupal code"
+  type        = string
+  default     = ""
+}
+
+variable git_url {
+  description = "url of the git remote repository to download drupal code (it should not contain https://)"
+  type        = string
+  default     = ""
+}
+
+variable git_branch {
+  description = "branch which will be downloaded from the git remote repository"
+  type        = string
+  default     = ""
+}
+
+variable git_enabled {
+  description = "Enable download drupal code download from a git repository"
+  type        = bool
+  default     = false
+}
+
+variable settings_configmap_name {
+  description = "Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git)"
+  type        = string
+  default     = ""
+}
