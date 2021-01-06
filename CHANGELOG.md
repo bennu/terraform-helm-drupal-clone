@@ -1,4 +1,13 @@
 <a name="v1.0.0"></a>
+## v1.0.1
+
+> 05-01-2021
+
+### Feat
+
+* Drupal-clone updated to 1.0.6 now supporting downloading drupal code from git and getting settings.php from a configmap
+
+<a name="v1.0.0"></a>
 ## v1.0.0
 
 > 04-01-2021

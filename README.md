@@ -98,6 +98,7 @@ module "my-site" {
 | ingress_annotattions | Annotations for drupal-clone ingress | `map` | `{}` | yes |
 | git_user | Username for git remote repository to download drupal code | `string` | `""` | no |
 | git_password | Password for git remote repository to download drupal code | `string` | `""` | no |
+| git_name | name of the git remote repository to download drupal code | `string` | `""` | no |
 | git_url | "url of the git remote repository to download drupal code (it should not contain https://) | `string` | `""` | no |
 | git_branch | branch which will be downloaded from the git remote repository | `string` | `""` | no |
 | settings_configmap_name | Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git) | `string` | `""` | no |
