@@ -9,11 +9,10 @@ This module bring to use drupal-clone helm chart which help us to migrate and de
 In any case, there are some previous steps that needs to be done before using this module.
 
 - A existing and populated database accesible from K8s
-- A s3 bucket (or compatible bucket) with a tar.gz file for Drupal itself 
+- A s3 bucket (or compatible bucket) with a tar.gz file for Drupal itself or a git remote repository with Drupal 
 - A s3 bucket (or compatible bucket) with a tar.gz file for the 'files' folder containing all the assets uploaded by the users
-- A existing secret (basich-auth) containing the username and password for the database
-- A existing secret (basich-auth containing the username and password for the s3 bucket 
-
+- A existing secret (basic-auth) containing the username and password for the database
+- A existing secret (basic-auth containing the username and password for the s3 bucket 
 
 ### Requeriments
 
@@ -21,35 +20,41 @@ In any case, there are some previous steps that needs to be done before using th
 |:----:|:-------:|
 | Terraform | `>= 0.13` |
 | Kubernetes | `>= 1.16` |
-| MySQL | `>= 5.5.3` |
+| MySQL | `>= 5.5.3` or what is needed by Drupal |
 
 
 ### Chart
 
 | Name | Repository | Version |
 |:----:|:----------:|:-------:|
-| drupal-clone | https://charts.bennu.cl | `>= 1.0.6` |
+| drupal-clone | https://charts.bennu.cl | `>= 1.0.7` |
 
 
 
 #### Example main.tf file
 
 ```hcl
-module "my-site" {
-  source                  = "bennu/drupal-clone/helm"
-  version                 = "1.0.0"
-  name                    = "my-drupal-website"
-  namespace               = "my-namespace"
-  db_host                 = "192.168.5.10"
-  db_name                 = "my-database-name"
-  db_secret_name          = "mysql-credentials"
-  s3_hostname             = "https://my.s3.bucket/"
-  s3_assets_path          = "path/to/files"
-  s3_assets_filename      = "files.tar.gz"
-  s3_custom_site_path     = "path/to/drupal"
-  s3_custom_site_filename = "my-drupal-site.tar.gz"
-  s3_secret_name          = "s3-credentials"
-  ingress_host            = "my-drupal-site.k8s.com"
+module "my-drupal-site" {
+
+  source  = "bennu/drupal-clone/helm"
+  version = "1.0.3"
+  name                          = "my-drupal-site"
+  namespace                     = "my-namespace"
+  db_host                       = "192.168.1.5"
+  chart_version                 = "1.0.7"
+  code_provider                 = "s3"
+  preinstall_image_repository   = "bennu/mc"
+  preinstall_image_tag          = "testV3"
+  settings_configmap_name       = "my-settings-configmpa"
+  db_name                       = "my-database"
+  db_secret_name                = "mysql-credentials"
+  s3_hostname                   = "https://my.s3.com"
+  s3_assets_path                = "path/to/asserts"
+  s3_assets_filename            = "my-assets.tar.gz"
+  s3_secret_name                = "s3-credentials"
+  s3_custom_site_path           = "path/to/site/code"
+  s3_custom_site_filename       = "my-site-code.tar.gz"
+  ingress_host                  = "my-site.my-domain.com"
   ingress_annotattions = {
     "kubernetes.io/ingress.class"                    = "nginx"
     "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
@@ -57,7 +62,50 @@ module "my-site" {
     "nginx.ingress.kubernetes.io/ssl-redirect"       = "true"
   }
 }
+
 ```
+
+#### Drupal code provider
+
+For now, there are two ways to migrate a existing Drupal website using Drupal clone:
+
+- s3 Bucket or compatbiel
+- Git remote repository
+
+You need to specify which provider will be used, assigned the value s3 or git to the input code_provider
+
+| Name | Description | Type | Default | Required |
+|:----:|:-----------:|:----:|:-------:|:--------:|
+| code_provider | Name of the drupal code provider. Possible values: git, s3 | `string` | `"git"` | yes |
+
+Depending of the chosen value, you will need to assign certain values
+
+#### Needed inputs for s3 provider
+
+| Name | Description | Type | Default | Required |
+|:----:|:-----------:|:----:|:-------:|:--------:|
+| s3_custom_site_path | path/to/custom/site inside s3 bucket or compatible | `string` | `""` | no |
+| s3_custom_site_filename | filename for custom site file (tar.gz)| `string` | `""` | no |
+
+#### Needed inputs for git provider
+| Name | Description | Type | Default | Required |
+|:----:|:-----------:|:----:|:-------:|:--------:|
+| git_name | name of the git remote repository to download drupal code | `string` | `""` | no |
+| git_url | "url of the git remote repository to download drupal code (it should not contain https://) | `string` | `""` | no |
+| git_branch | branch which will be downloaded from the git remote repository | `string` | `""` | no |
+| settings_configmap_name | Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git) | `string` | `""` | yes |
+| code_provider | Name of the drupal code provider. Possible values: git, s3 | `string` | `"git"` | yes |
+| git_secret_name | Name of the secret containing username and password of the git repository user | `string` | `""` | no |
+| git_commit_hash | Commit hash to clone an specific commit of the drupal code | `string` | `""` | no |
+
+#### Cloning an specific commit
+
+If you need to deploy an specific commit from your git, you can set the following variable:
+
+| Name | Description | Type | Default | Required |
+|:----:|:-----------:|:----:|:-------:|:--------:|
+| git_commit_hash | Commit hash to clone an specific commit of the drupal code | `string` | `""` | no |
+
 
 #### Inputs
 | Name | Description | Type | Default | Required |
@@ -96,8 +144,6 @@ module "my-site" {
 | nginx_replica_count | replica count for nginx| `number` | `1` | no |
 | ingress_host | Ingress host for drupal-clone | `string` | `""` | yes |
 | ingress_annotattions | Annotations for drupal-clone ingress | `map` | `{}` | yes |
-| git_user | Username for git remote repository to download drupal code | `string` | `""` | no |
-| git_password | Password for git remote repository to download drupal code | `string` | `""` | no |
 | git_name | name of the git remote repository to download drupal code | `string` | `""` | no |
 | git_url | "url of the git remote repository to download drupal code (it should not contain https://) | `string` | `""` | no |
 | git_branch | branch which will be downloaded from the git remote repository | `string` | `""` | no |
