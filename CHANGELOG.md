@@ -1,5 +1,15 @@
+<a name="v1.0.3"></a>
+## v1.0.3
+
+> 06-01-2021
+
+### Feat
+
+* Support for s3 bucket and git to download drupal
+
+
 <a name="v1.0.2"></a>
-## v1.0.1
+## v1.0.2
 
 > 05-01-2021
 
