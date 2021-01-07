@@ -25,7 +25,7 @@ variable chart_name {
 variable chart_version {
   description = "Helm chart version for drupal-clone"
   type        = string
-  default     = "1.0.6"
+  default     = "1.0.7"
 }
 
 variable timeout {
@@ -38,6 +38,11 @@ variable db_host {
   description = "Mysql database hostname"
   type        = string
   default     = ""
+  
+  validation {
+    condition     = var.db_host != ""
+    error_message = "db_host shouldn't be empty"
+  }
 }
 
 variable db_port {
@@ -50,30 +55,55 @@ variable db_name {
   description = "Mysql database name"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.db_name != ""
+    error_message = "db_name shouldn't be empty"
+  }
 }
 
 variable db_secret_name {
   description = "Secret name containing user and password for Mysql"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.db_secret_name != ""
+    error_message = "db_secret_name shouldn't be empty"
+  }
 }
 
 variable s3_hostname {
   description = "s3 bucket or compatible bucket hostname"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.s3_hostname != ""
+    error_message = "s3_hostname shouldn't be empty"
+  }
 }
 
 variable s3_assets_path {
   description = "path/to/assets/ inside s3 bucket or compatible"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.s3_assets_path != ""
+    error_message = "s3_assets_path shouldn't be empty"
+  }
 }
 
 variable s3_assets_filename {
   description = "filename for assets file (tar.gz)"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.s3_assets_filename != ""
+    error_message = "s3_assets_filename shouldn't be empty"
+  }
 }
 
 variable s3_custom_site_path {
@@ -92,6 +122,11 @@ variable s3_secret_name {
   description = "Secret name containing user and password for s3 bucket or compatible"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.s3_secret_name != ""
+    error_message = "s3_secret_name shouldn't be empty"
+  }
 }
 
 variable pvc_create {
@@ -194,24 +229,22 @@ variable ingress_host {
   description = "Ingress host for drupal-clone"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.ingress_host != ""
+    error_message = "ingress_host shouldn't be empty"
+  }
 }
 
 variable ingress_annotattions {
   description = "Annotations for drupal-clone ingress"
   type        = map
   default     = {}
-}
 
-variable git_user {
-  description = "Username for git remote repository to download drupal code"
-  type        = string
-  default     = ""
-}
-
-variable git_password {
-  description = "Password for git remote repository to download drupal code"
-  type        = string
-  default     = ""
+  validation {
+    condition     = length(var.ingress_annotattions)
+    error_message = "ingress_annotattions shouldn't be empty"
+  }
 }
 
 variable git_name {
@@ -232,14 +265,37 @@ variable git_branch {
   default     = ""
 }
 
-variable git_enabled {
-  description = "Enable download drupal code download from a git repository"
-  type        = bool
-  default     = false
-}
-
 variable settings_configmap_name {
   description = "Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git)"
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.settings_configmap_name != ""
+    error_message = "settings_configmap_name shouldn't be empty"
+  }
+}
+
+
+variable code_provider {
+  description = "Name of the drupal code provider. Possible values: git, s3"
+  type        = string
+  default     = "git"
+
+  validation {
+    condition     = var.code_provider == "git" ||  var.code_provider == "s3"
+    error_message = "code_provider value should be git or s3"
+  }
+}
+
+variable git_secret_name {
+  description = "Name of the secret containing username and password of the git repository user"
+  type        = string
+  default     = ""
+}
+
+variable git_commit_hash {
+  description = "Commit hash to clone an specific commit of the drupal code"
+  type        = string
+  default     = "" 
 }

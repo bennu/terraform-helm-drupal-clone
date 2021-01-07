@@ -75,8 +75,8 @@ module "my-site" {
 | s3_hostname | s3 bucket or compatible bucket hostname | `string` | `""` | yes |
 | s3_assets_path | path/to/assets/ inside s3 bucket or compatible | `string` | `""` | yes |
 | s3_assets_filename | filename for assets file (tar.gz) | `string` | `""` | yes |
-| s3_custom_site_path | path/to/custom/site inside s3 bucket or compatible | `string` | `""` | yes |
-| s3_custom_site_filename | filename for custom site file (tar.gz)| `string` | `""` | yes |
+| s3_custom_site_path | path/to/custom/site inside s3 bucket or compatible | `string` | `""` | no |
+| s3_custom_site_filename | filename for custom site file (tar.gz)| `string` | `""` | no |
 | s3_secret_name | Secret name containing user and password for s3 bucket or compatible| `string` | `""` | yes |
 | pvc_create | Create a new pvc for the deployment | `bool` | `true` | no |
 | pvc_memory | Memory assigned for the new pvc (pvc_create should be true) | `string` | `"5Gi"` | no |
@@ -101,7 +101,11 @@ module "my-site" {
 | git_name | name of the git remote repository to download drupal code | `string` | `""` | no |
 | git_url | "url of the git remote repository to download drupal code (it should not contain https://) | `string` | `""` | no |
 | git_branch | branch which will be downloaded from the git remote repository | `string` | `""` | no |
-| settings_configmap_name | Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git) | `string` | `""` | no |
-| git_enabled | Enable download drupal code download from a git repository | `bool` | `false` | no |
+| settings_configmap_name | Configmap name containing the settings.php file for drupal (It's only used when downloading drupal from git) | `string` | `""` | yes |
+| code_provider | Name of the drupal code provider. Possible values: git, s3 | `string` | `"git"` | yes |
+| git_secret_name | Name of the secret containing username and password of the git repository user | `string` | `""` | no |
+| git_commit_hash | Commit hash to clone an specific commit of the drupal code | `string` | `""` | no |
+
+
 
 

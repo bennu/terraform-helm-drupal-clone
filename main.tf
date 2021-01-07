@@ -22,28 +22,15 @@ resource helm_release drupal-clone {
           url        = var.db_host
           secretName = var.db_secret_name
         }
-        environment = {
-          s3Bucket           = var.s3_hostname
-          assetsRoute        = var.s3_assets_path
-          customSiteRoute    = var.s3_custom_site_path
-          assetsFileName     = var.s3_assets_filename
-          customSiteFileName = var.s3_custom_site_filename
-          s3BucketSecretName = var.s3_secret_name
-        }
+   
+        codeProvider = local.code_provider_config
+        
         persistenceClaim = {
           enabled       = var.pvc_create
           memory        = var.pvc_memory
           existingClaim = var.pvc_existing
         }
         jobs = {
-          gitInstallation = {
-            enabled   = var.git_enabled
-            name      = var.git_name
-            user      = var.git_user
-            password  = var.git_password
-            url       = var.git_url
-            branch    = var.git_branch
-          }
           preInstall = {
             name = var.preinstall_name
             image = {
