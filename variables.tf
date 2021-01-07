@@ -58,7 +58,7 @@ variable db_name {
 
   validation {
     condition     = var.db_name != ""
-    error_message = "db_name shouldn't be empty"
+    error_message = "Variable db_name shouldn't be empty"
   }
 }
 
@@ -69,7 +69,7 @@ variable db_secret_name {
 
   validation {
     condition     = var.db_secret_name != ""
-    error_message = "db_secret_name shouldn't be empty"
+    error_message = "Variable db_secret_name shouldn't be empty"
   }
 }
 
@@ -80,7 +80,7 @@ variable s3_hostname {
 
   validation {
     condition     = var.s3_hostname != ""
-    error_message = "s3_hostname shouldn't be empty"
+    error_message = "Variable s3_hostname shouldn't be empty"
   }
 }
 
@@ -91,7 +91,7 @@ variable s3_assets_path {
 
   validation {
     condition     = var.s3_assets_path != ""
-    error_message = "s3_assets_path shouldn't be empty"
+    error_message = "Variable s3_assets_path shouldn't be empty"
   }
 }
 
@@ -102,7 +102,7 @@ variable s3_assets_filename {
 
   validation {
     condition     = var.s3_assets_filename != ""
-    error_message = "s3_assets_filename shouldn't be empty"
+    error_message = "Variable s3_assets_filename shouldn't be empty"
   }
 }
 
@@ -125,7 +125,7 @@ variable s3_secret_name {
 
   validation {
     condition     = var.s3_secret_name != ""
-    error_message = "s3_secret_name shouldn't be empty"
+    error_message = "Variable s3_secret_name shouldn't be empty"
   }
 }
 
@@ -232,7 +232,7 @@ variable ingress_host {
 
   validation {
     condition     = var.ingress_host != ""
-    error_message = "ingress_host shouldn't be empty"
+    error_message = "Map ingress_host shouldn't be empty"
   }
 }
 
@@ -243,7 +243,7 @@ variable ingress_annotattions {
 
   validation {
     condition     = length(var.ingress_annotattions)
-    error_message = "ingress_annotattions shouldn't be empty"
+    error_message = "Variable ingress_annotattions shouldn't be empty"
   }
 }
 
@@ -272,10 +272,9 @@ variable settings_configmap_name {
 
   validation {
     condition     = var.settings_configmap_name != ""
-    error_message = "settings_configmap_name shouldn't be empty"
+    error_message = "Variable settings_configmap_name shouldn't be empty"
   }
 }
-
 
 variable code_provider {
   description = "Name of the drupal code provider. Possible values: git, s3"
@@ -284,7 +283,7 @@ variable code_provider {
 
   validation {
     condition     = var.code_provider == "git" ||  var.code_provider == "s3"
-    error_message = "code_provider value should be git or s3"
+    error_message = "Variable code_provider value should be git or s3"
   }
 }
 
