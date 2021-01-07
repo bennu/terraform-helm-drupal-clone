@@ -41,7 +41,7 @@ variable db_host {
   
   validation {
     condition     = var.db_host != ""
-    error_message = "db_host shouldn't be empty."
+    error_message = "Variable db_host shouldn't be empty."
   }
 }
 
