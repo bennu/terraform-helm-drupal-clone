@@ -229,6 +229,11 @@ variable ingress_host {
   description = "Ingress host for drupal-clone"
   type        = string
   default     = ""
+  validation {
+    condition     = var.ingress_host != ""
+    error_message = "Variable ingress_host shouldn't be empty."
+  }
+
 }
 
 variable ingress_annotattions {
@@ -237,8 +242,8 @@ variable ingress_annotattions {
   default     = {}
 
   validation {
-    condition     = length(var.ingress_annotattions)
-    error_message = "Variable ingress_annotattions shouldn't be empty."
+    condition     = length(var.ingress_annotattions) > 0
+    error_message = "Map ingress_annotattions shouldn't be empty."
   }
 }
 
